@@ -1,0 +1,21 @@
+*****************************************************
+*** Here are commands collected for just in case. ***
+*****************************************************
+
+# As the environment is created in image so the project should be created in this environment
+# Done
+docker-compose run --rm web-app sh -c "django-admin startproject project ."
+docker-compose run --rm web-app sh -c "python manage.py migrate"
+docker-compose run --rm web-app sh -c "python manage.py createsuperuser"
+docker-compose run --rm web-app sh -c "python manage.py startapp accounts"
+docker-compose run --rm web-app sh -c "python manage.py startapp services"
+
+
+# May be helpful during developing
+docker-compose run --rm web-app sh -c "python manage.py makemigrations accounts"
+docker-compose run --rm web-app sh -c "python manage.py makemigrations services"
+docker-compose run --rm web-app sh -c "python manage.py migrate"
+
+
+# cacheops invalidation
+docker-compose run --rm web-app sh -c "python manage.py invalidate accounts"
