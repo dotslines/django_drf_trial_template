@@ -1,1 +1,6 @@
 __pycache__/
+migrations/
+.mypy_cache
+requirements_dev.txt
+setup.cfg
+commands.txt

@@ -2,7 +2,7 @@ django==4.1
 djangorestframework==3.14.0
 django-cacheops==7.0
 
-psycopg2==2.9.6
+psycopg2-binary
 
 celery[redis]==5.2.7
 celery-singleton==0.3.1
