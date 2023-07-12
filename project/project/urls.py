@@ -25,10 +25,10 @@ from services.views import SubscriptionView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/', include('accounts.urls'), name='accounts'),
-    
+
     path('swagger-ui/', TemplateView.as_view(
         template_name='swagger-ui.html',
-        extra_context={'schema_url':'openapi-schema'}
+        extra_context={'schema_url': 'openapi-schema'}
     ), name='swagger-ui'),
     path('openapi', get_schema_view(
             title="DRF Demo project",

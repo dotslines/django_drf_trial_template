@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+from typing import List
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-1omqr=4^!3rp_*8ua_x#vq26ia@^0)7w_8i@4wlr*4qo#rn6vk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS: List[str] = []
 
 
 # Application definition
@@ -38,10 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'rest_framework',
+
     # third party
     'cacheops',
-    
+
     # project
     'accounts.apps.AccountsConfig',
     'services.apps.ServicesConfig',
@@ -101,7 +103,7 @@ DATABASES = {
 }
 
 
-AUTH_USER_MODEL="accounts.Account"
+AUTH_USER_MODEL = "accounts.Account"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

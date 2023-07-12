@@ -1,39 +1,40 @@
 from django.contrib.auth import login
-from rest_framework import generics, views, viewsets, status
+from django.http import HttpRequest
+
+from rest_framework import generics, status, views, viewsets
+# from rest_framework.authentication import (
+#     BasicAuthentication,
+#     SessionAuthentication
+# )
+from rest_framework.permissions import AllowAny  # IsAdminUser,
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.authentication import (
-    BasicAuthentication, SessionAuthentication
-)
-from rest_framework.permissions import (
-    AllowAny, IsAdminUser, IsAuthenticated
-)
 
 from utils.mixins import AccountsPermissionMixin
-from .serializers import (
-    AccountSerializer, ChangePasswordSerializer,
-    LoginSerializer,
-)
+
 from .models import Account
+from .serializers import (AccountSerializer, ChangePasswordSerializer,
+                          LoginSerializer)
 
 
 class AccountViewSet(AccountsPermissionMixin,
                      viewsets.ModelViewSet):
     """
-    Account model viewset
+    Account model viewset.
     """
-    # authentication_classes = [
+    # authentication_classes = (
     #     SessionAuthentication, BasicAuthentication
-    # ]
-    # permission_classes = [IsAdminUser]
+    # )
+    # permission_classes = IsAdminUser,
     serializer_class = AccountSerializer
-    
+
     def get_queryset(self):
         """
         lets to format queryset
         """
         qs = Account.objects.all()
         return qs
-    
+
     def get_serializer_context(self):
         """
         lets to update and pass the additional
@@ -41,32 +42,44 @@ class AccountViewSet(AccountsPermissionMixin,
         """
         context = super().get_serializer_context()
         return context
-    
+
     # HTTP methods
 
-    def list(self, request):
+    def list(self,
+             request: HttpRequest) -> Response:
         """ GET list """
         qs = self.get_queryset()
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
 
-    def create(self, request):
+    def create(self,
+               request: HttpRequest) -> Response:
         """ POST """
         return super().create(request)
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self,
+                 request: HttpRequest,
+                 pk: str) -> Response:
         """ GET instance """
         return super().retrieve(request, pk=pk)
 
-    def update(self, request, pk=None, **kwargs):
+    def update(self,
+               request: HttpRequest,
+               pk: str,
+               **kwargs) -> Response:
         """ PUT instance """
         return super().update(request, pk=pk, **kwargs)
 
-    def partial_update(self, request, pk=None, **kwargs):
+    def partial_update(self,
+                       request: HttpRequest,
+                       pk: str,
+                       **kwargs) -> Response:
         """ PATCH instance """
         return super().partial_update(request, pk=pk)
 
-    def destroy(self, request, pk=None):
+    def destroy(self,
+                request: HttpRequest,
+                pk: str) -> Response:
         """ DELETE instance """
         return super().destroy(request, pk=pk)
 
@@ -74,20 +87,24 @@ class AccountViewSet(AccountsPermissionMixin,
 class ChangePasswordView(generics.UpdateAPIView):
     """
     Change account password view,
-    allows PUT and PATCH.
+    allows PUT and PATCH HTTP methods.
     """
     queryset = Account.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = IsAuthenticated,
     serializer_class = ChangePasswordSerializer
 
 
 class LoginView(views.APIView):
     """ Login api view,
     returns sessionid in Set-Cookie header"""
-    permission_classes = (AllowAny,)
-    serializer_class = LoginSerializer  
-    
-    def post(self, request):
+    permission_classes = AllowAny,
+    serializer_class = LoginSerializer
+
+    def post(self,
+             request: HttpRequest) -> Response:
+        """
+        Post HTTP method handler function.
+        """
         context = {'request': self.request}
         serializer = self.serializer_class(
                             data=self.request.data,

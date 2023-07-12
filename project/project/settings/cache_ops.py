@@ -1,11 +1,11 @@
 CACHEOPS_REDIS = {
-    'host': 'redis', # redis-server is on same machine
+    'host': 'redis',     # redis-server is on same machine
     'port': 6379,        # default redis port
     'db': 1,             # SELECT non-default redis database
                          # using separate redis db or redis instance
                          # is highly recommended
 
-    'socket_timeout': 3,   # connection timeout in seconds, optional
+    'socket_timeout': 3,     # connection timeout in seconds, optional
     # 'password': '...',     # optional
     # 'unix_socket_path': '' # replaces host and port
 }
@@ -39,9 +39,6 @@ CACHEOPS = {
     # to cache particular ORM request.
     # Invalidation is still automatic
     '*.*': {'ops': (), 'timeout': 60*60},
-
-    # And since ops is empty by default you can rewrite last line as:
-    '*.*': {'timeout': 60*60},
 
     # NOTE: binding signals has its overhead, like preventing fast mass deletes,
     #       you might want to only register whatever you cache and dependencies.

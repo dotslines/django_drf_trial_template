@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.db.models import F, Prefetch, Sum
+from django.db.models import Prefetch, Sum
 from django.core.cache import cache
 from django.conf import settings
 from rest_framework.response import Response
@@ -19,24 +18,27 @@ class SubscriptionView(ReadOnlyModelViewSet):
                 Prefetch(
                     'account',
                     queryset=Account.objects.all(
-                                            ).select_related('user'
-                                            ).only('company_name', 'user__email')
+                                ).select_related(
+                                    'user'
+                                ).only('company_name', 'user__email')
                 )
             )
     serializer_class = SubscriptionSerializer
-    
+
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
-        
+
         price_cached = cache.get(settings.PRICE_CACHED_NAME)
-        
+
         if price_cached:
             total = price_cached
         else:
-            qs = self.filter_queryset(self.get_queryset())     # to apply filter backends
+            # to apply filter backends
+            qs = self.filter_queryset(self.get_queryset())
+
             total = qs.aggregate(total=Sum('price')).get('total')
             cache.set(settings.PRICE_CACHED_NAME, total, 10)
-        
+
         modified_response = {
             'subscriptions': response.data,
             'total': total
