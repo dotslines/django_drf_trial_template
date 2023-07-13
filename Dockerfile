@@ -8,6 +8,9 @@ EXPOSE 8000
 
 RUN apk add postgresql-client build-base postgresql-dev
 RUN pip install -r ../requirements.txt
-RUN adduser --disabled-password project-user
 
-USER project-user
+RUN addgroup -S projectuser
+RUN adduser --disabled-password -S projectuser -G projectuser
+
+RUN chown -R projectuser:projectuser /project
+USER projectuser

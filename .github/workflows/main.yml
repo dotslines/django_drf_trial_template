@@ -1,0 +1,17 @@
+name: test_project
+run-name: Test project by @${{ github.actor }}
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+# jobs run in parallel by default.
+  test_project: 
+    name: 
+    runs-on: ubuntu-latest  
+    steps:  
+      - uses: actions/checkout@v2  
+      - uses: actions/setup-python@v2  
+      - run: pip install -r requirements.txt
+      - run: pytest .

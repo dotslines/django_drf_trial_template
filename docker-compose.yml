@@ -10,10 +10,11 @@ services:
   web-app:
     build: 
       context: .
+    # user: projectuser:projectuser
     ports:
       - "8000:8000"
-    volumes:
-      - ./project:/project
+    # volumes:
+      # - ./project:/project
     command:
       - /bin/sh
       - -c

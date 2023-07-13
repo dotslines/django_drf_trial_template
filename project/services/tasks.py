@@ -14,7 +14,7 @@ def set_price(subscription_id):
     from .models import Subscription
 
     # fp - (fp * discount)/100
-    annotated_price_formula = (
+    price_formula = (
         F('service__full_price') -
         F('service__full_price') *
         F('plan__discount_percent') / 100
@@ -25,7 +25,7 @@ def set_price(subscription_id):
                 ).filter(
                     id=subscription_id
                 ).annotate(
-                    annotated_price=annotated_price_formula
+                    annotated_price=price_formula
                 ).first()
         subscription.price = subscription.annotated_price
         subscription.save()
